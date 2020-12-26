@@ -6,8 +6,8 @@ require "pp"
 module HttpFn::Rack
   fn_reader :to_env, :server, :rack_resp_to_resp
 
-  @@server = -> rack { to_env >> rack.method(:call) >> rack_resp_to_resp }
-  @@to_env = -> request {
+  @@server = ->rack { to_env >> rack.method(:call) >> rack_resp_to_resp }
+  @@to_env = ->request {
     session ||= {}
     session_options ||= {}
 
@@ -43,13 +43,13 @@ module HttpFn::Rack
     env
   }
 
-  @@rack_resp_to_resp = -> resp {
+  @@rack_resp_to_resp = ->resp {
     { status: resp[0],
-     header: resp[1],
-     body: @@body_from_rack_response.(resp[2]) }
+      header: resp[1],
+      body: @@body_from_rack_response.(resp[2]) }
   }
 
-  @@body_from_rack_response = -> response {
+  @@body_from_rack_response = ->response {
     body = ""
     response.each { |line| body << line }
     response.close if response.respond_to?(:close)

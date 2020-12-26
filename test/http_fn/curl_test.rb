@@ -1,18 +1,13 @@
-require 'minitest_helper'
-require 'http_fn'
-require 'http_fn/rack'
-require 'http_fn/curl'
+require "minitest_helper"
+require "http_fn"
+require "http_fn/rack"
+require "http_fn/curl"
 
 class HttpFn::CurlTest < Minitest::Test
   include HttpFn
 
-  def setup 
-    @curl = verb.("GET") >>~ 
-      with_path.("/coucou") >>~ 
-      with_headers.(json_headers) >>~ 
-      with_host.("https://api.github.com") >>~ 
-      with_json.({user: "martin"}) >>~
-      HttpFn::Curl.req >>+ run_
+  def setup
+    @curl = verb.("GET") >> ~with_path.("/coucou") >> ~with_headers.(json_headers) >> ~with_host.("https://api.github.com") >> ~with_json.({ user: "martin" }) >> ~HttpFn::Curl.req >> +run_
   end
 
   def test_should_return_a_curl_command

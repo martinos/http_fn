@@ -6,7 +6,7 @@ module HttpFn::Curl
 
   fn_reader :print_curl, :req
 
-  @@req = -> req {
+  @@req = ->req {
     first_part = %{curl -X '#{req[:method]}' '#{HttpFn::to_uri.(req).to_s}' #{req[:header].map(&@@header_to_curl).join(" ")}}
     if req[:body] && !req[:body].empty?
       first_part + %{\n\    -d $'#{req[:body].gsub("'", "\'")}'}
@@ -14,9 +14,9 @@ module HttpFn::Curl
       first_part
     end
   }
-  @@header_to_curl = -> a {
+  @@header_to_curl = ->a {
     "\\\n    -H '#{a[0]}: #{a[1]}'"
   }
 
-  @@print_curl = -> req { $stdout.puts(to_curl.(req)); req }.curry
+  @@print_curl = ->req { $stdout.puts(to_curl.(req)); req }.curry
 end
